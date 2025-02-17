@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'package:chatxfirebase/Screens/HomeScreen.dart';
 import 'package:chatxfirebase/Screens/LoginScreen.dart';
 import 'package:chatxfirebase/Services/Auth_Services.dart';
 import 'package:chatxfirebase/Utils/CustomBTN.dart';
 import 'package:chatxfirebase/Utils/CustomTF.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
@@ -53,19 +55,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
               if((_emailClt.text.isNotEmpty && _passClt.text.isNotEmpty && _conPassClt.text.isNotEmpty) && (_passClt.text == _conPassClt.text)){
                 try{
                   await auth.signUpWthEmail(_emailClt.text, _passClt.text);
+                  log("signup");
+                  await Future.delayed(const Duration(seconds: 2));
 
-                  // await Future.delayed(const Duration(seconds: 2));
-                  //
-                  // // Check if user is signed in
-                  // if (FirebaseAuth.instance.currentUser != null) {
-                  //   log("Signup success, redirecting to LoginScreen");
-                  //   Navigator.pushReplacement(
-                  //     context,
-                  //     MaterialPageRoute(builder: (_) => const LoginScreen()),
-                  //   );
-                  // } else {
-                  //   log("Signup successful but user not authenticated");
-                  // }
+                  // Check if user is signed in
+                  if (FirebaseAuth.instance.currentUser != null) {
+                    log("Signup success, redirecting to LoginScreen");
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) =>  HomeScreen()),
+                    );
+                  } else {
+                    log("Signup successful but user not authenticated");
+                  }
 
                 }catch(e){
                   log(e.toString());
